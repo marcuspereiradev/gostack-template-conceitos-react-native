@@ -18,7 +18,7 @@ export default function App() {
     api.get('repositories').then((response) => {
       setRepository(response.data);
     });
-  }, []);
+  }, [repositories]);
 
   async function addRepository() {
     const response = await api.post('repositories', {
@@ -44,6 +44,10 @@ export default function App() {
     ));
 
     setRepository(repoUpdated);
+  }
+
+  async function handleRemoveRepository(id) {
+    await api.delete(`repositories/${id}`);
   }
 
   return (
@@ -82,6 +86,15 @@ export default function App() {
                 testID={`like-button-${repository.id}`}
               >
                 <Text style={styles.buttonText}>Curtir</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => handleRemoveRepository(repository.id)}
+                // Remember to replace "1" below with repository ID: {`like-button-${repository.id}`}
+                testID={`like-button-${repository.id}`}
+              >
+                <Text style={styles.buttonText}>Remover</Text>
               </TouchableOpacity>
             </View>
           )}
